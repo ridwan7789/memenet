@@ -91,11 +91,11 @@ export default {
           "75%": { transform: "translateY(-20px) rotate(1deg)" },
         },
         "pulse-glow": {
-          "0%, 100%": { 
-            boxShadow: "0 0 20px hsl(var(--neon-green) / 0.5), 0 0 40px hsl(var(--neon-green) / 0.3)" 
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(var(--neon-green) / 0.5), 0 0 40px hsl(var(--neon-green) / 0.3)"
           },
-          "50%": { 
-            boxShadow: "0 0 40px hsl(var(--neon-green) / 0.8), 0 0 80px hsl(var(--neon-purple) / 0.5)" 
+          "50%": {
+            boxShadow: "0 0 40px hsl(var(--neon-green) / 0.8), 0 0 80px hsl(var(--neon-purple) / 0.5)"
           },
         },
         "shimmer": {

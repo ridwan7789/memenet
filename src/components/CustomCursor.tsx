@@ -1,30 +1,38 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const CustomCursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
   const [isClicking, setIsClicking] = useState(false);
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+
+  const animationFrameRef = useRef<number | null>(null);
+  const idCounter = useRef(0);
 
   useEffect(() => {
-    let trailId = 0;
-    
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      
-      // Add trail particle
-      trailId++;
-      setTrail(prev => [...prev.slice(-8), { x: e.clientX, y: e.clientY, id: trailId }]);
+      // Use requestAnimationFrame for better performance
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+
+      animationFrameRef.current = requestAnimationFrame(() => {
+        // Update mouse position
+        setMousePosition({ x: e.clientX, y: e.clientY });
+
+        // Add trail particle - simplified approach
+        const newId = idCounter.current++;
+        setTrail(prev => [
+          { x: e.clientX, y: e.clientY, id: newId },
+          ...prev.slice(0, 4) // Keep only 4 trail particles
+        ]);
+      });
     };
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('button, a, [role="button"]')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
+      setIsHovering(!!target.closest('button, a, [role="button"]'));
     };
 
     const handleMouseDown = () => setIsClicking(true);
@@ -40,101 +48,73 @@ const CustomCursor = () => {
       window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, []);
 
-  // Clean old trail particles
+  // Clean old trail periodically
   useEffect(() => {
     const interval = setInterval(() => {
-      setTrail(prev => prev.slice(-6));
-    }, 50);
+      setTrail(prev => prev.slice(0, 4)); // Keep only 4 trail particles
+    }, 100);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
-      {/* Trail particles */}
-      <AnimatePresence>
-        {trail.map((particle, index) => (
-          <motion.div
-            key={particle.id}
-            initial={{ opacity: 0.8, scale: 1 }}
-            animate={{ opacity: 0, scale: 0.3 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed pointer-events-none z-[9998]"
-            style={{
-              left: particle.x - 4,
-              top: particle.y - 4,
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: `linear-gradient(135deg, hsl(160 92% 51% / ${0.3 + index * 0.1}), hsl(265 100% 64% / ${0.2 + index * 0.05}))`,
-              filter: 'blur(1px)',
-            }}
-          />
-        ))}
-      </AnimatePresence>
+      {/* Trail particles - simplified and optimized */}
+      {trail.map((particle, index) => (
+        <motion.div
+          key={particle.id}
+          className="fixed pointer-events-none z-[9998] rounded-full bg-emerald-400"
+          style={{
+            left: particle.x - 2,
+            top: particle.y - 2,
+            width: 4,
+            height: 4,
+            opacity: 0.6 - (index * 0.15), // Fade out older particles
+          }}
+          initial={{ opacity: 0.6, scale: 0.8 }}
+          animate={{ opacity: 0.1, scale: 0.3 }}
+          transition={{ duration: 0.6 }}
+        />
+      ))}
 
-      {/* Main cursor */}
+      {/* Main cursor - simplified */}
       <motion.div
-        className="fixed pointer-events-none z-[9999]"
+        className="fixed pointer-events-none z-[9999] text-xl"
+        style={{
+          left: mousePosition.x - 8,
+          top: mousePosition.y - 8,
+          filter: 'drop-shadow(0 0 6px hsl(160 92% 51%))'
+        }}
         animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.5 : isClicking ? 0.8 : 1,
-          rotate: isClicking ? [0, -10, 10, 0] : 0,
+          scale: isHovering ? 1.3 : isClicking ? 0.9 : 1,
         }}
         transition={{
-          type: 'spring',
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5,
+          scale: { duration: 0.2 },
+          opacity: { duration: 0.2 }
         }}
       >
-        <div 
-          className="relative text-2xl"
-          style={{
-            filter: `drop-shadow(0 0 10px hsl(160 92% 51%)) drop-shadow(0 0 20px hsl(265 100% 64% / 0.5))`,
-          }}
-        >
-          🚀
-          {/* Flame effect */}
-          <motion.div
-            className="absolute -bottom-1 left-1/2 -translate-x-1/2"
-            animate={{
-              scaleY: [1, 1.3, 1],
-              opacity: [0.8, 1, 0.8],
-            }}
-            transition={{
-              duration: 0.2,
-              repeat: Infinity,
-            }}
-          >
-            <span className="text-sm" style={{ filter: 'blur(1px)' }}>🔥</span>
-          </motion.div>
-        </div>
+        •
       </motion.div>
 
-      {/* Glow ring on hover */}
+      {/* Hover effect - simplified */}
       {isHovering && (
         <motion.div
-          className="fixed pointer-events-none z-[9997] rounded-full"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ 
-            opacity: 1, 
-            scale: 1,
-            x: mousePosition.x - 30,
-            y: mousePosition.y - 30,
-          }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="fixed pointer-events-none z-[9997] rounded-full border border-emerald-400/50"
           style={{
-            width: 60,
-            height: 60,
-            border: '2px solid hsl(160 92% 51% / 0.5)',
-            boxShadow: '0 0 20px hsl(160 92% 51% / 0.3), inset 0 0 20px hsl(265 100% 64% / 0.2)',
+            left: mousePosition.x - 16,
+            top: mousePosition.y - 16,
+            width: 32,
+            height: 32,
           }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 0.6, scale: 1 }}
+          transition={{ duration: 0.2 }}
         />
       )}
     </>

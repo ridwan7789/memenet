@@ -71,7 +71,7 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
-    cursor: none;
+    cursor: default; /* Changed from none for better UX */
   }
 
   html {
@@ -80,136 +80,126 @@
 }
 
 @layer components {
-  /* Glassmorphism Card */
+  /* Optimized Glassmorphism Card */
   .glass-card {
     @apply relative overflow-hidden rounded-2xl;
-    background: linear-gradient(135deg, 
-      hsl(var(--cyber-dark) / 0.6) 0%, 
+    background: linear-gradient(135deg,
+      hsl(var(--cyber-dark) / 0.6) 0%,
       hsl(var(--cyber-black) / 0.8) 100%
     );
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px); /* Reduced blur for performance */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
     border: 1px solid hsl(var(--neon-green) / 0.2);
-    box-shadow: 
+    box-shadow:
       0 8px 32px hsl(var(--cyber-black) / 0.5),
       inset 0 1px 0 hsl(var(--neon-green) / 0.1);
   }
 
   .glass-card:hover {
     border-color: hsl(var(--neon-green) / 0.5);
-    box-shadow: 
+    box-shadow:
       0 8px 32px hsl(var(--cyber-black) / 0.5),
       0 0 30px hsl(var(--neon-green) / 0.2),
       inset 0 1px 0 hsl(var(--neon-green) / 0.2);
   }
 
-  /* Neon Text */
+  /* Optimized Neon Text */
   .neon-text {
-    text-shadow: 
+    text-shadow:
       0 0 10px currentColor,
-      0 0 20px currentColor,
-      0 0 40px currentColor;
+      0 0 20px currentColor;
   }
 
   .neon-text-green {
     color: hsl(var(--neon-green));
-    text-shadow: 
+    text-shadow:
       0 0 10px hsl(var(--neon-green) / 0.8),
-      0 0 20px hsl(var(--neon-green) / 0.6),
-      0 0 40px hsl(var(--neon-green) / 0.4);
+      0 0 20px hsl(var(--neon-green) / 0.6);
   }
 
   .neon-text-purple {
     color: hsl(var(--neon-purple));
-    text-shadow: 
+    text-shadow:
       0 0 10px hsl(var(--neon-purple) / 0.8),
-      0 0 20px hsl(var(--neon-purple) / 0.6),
-      0 0 40px hsl(var(--neon-purple) / 0.4);
+      0 0 20px hsl(var(--neon-purple) / 0.6);
   }
 
   .neon-text-cyan {
     color: hsl(var(--neon-cyan));
-    text-shadow: 
+    text-shadow:
       0 0 10px hsl(var(--neon-cyan) / 0.8),
-      0 0 20px hsl(var(--neon-cyan) / 0.6),
-      0 0 40px hsl(var(--neon-cyan) / 0.4);
+      0 0 20px hsl(var(--neon-cyan) / 0.6);
   }
 
-  /* Neon Border */
+  /* Optimized Border */
   .neon-border {
     border: 1px solid hsl(var(--neon-green) / 0.5);
-    box-shadow: 
-      0 0 10px hsl(var(--neon-green) / 0.3),
-      inset 0 0 10px hsl(var(--neon-green) / 0.1);
+    box-shadow:
+      0 0 10px hsl(var(--neon-green) / 0.3);
   }
 
-  /* Scanline Effect */
+  /* Optimized Scanline Effect - simpler version */
   .scanlines::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      hsl(var(--neon-green) / 0.03) 2px,
-      hsl(var(--neon-green) / 0.03) 4px
+    background: linear-gradient(
+      transparent 0%,
+      transparent 98%,
+      hsl(var(--neon-green) / 0.03) 98%,
+      hsl(var(--neon-green) / 0.03) 100%
     );
     pointer-events: none;
     z-index: 100;
+    background-size: 100% 4px;
   }
 
-  /* Glitch Effect */
+  /* Optimized Glitch Effect */
   @keyframes glitch {
-    0%, 90%, 100% {
+    0%, 100% {
       transform: translate(0);
-      opacity: 1;
     }
-    92% {
-      transform: translate(-2px, 1px);
-      opacity: 0.8;
+    20% {
+      transform: translate(-2px, 0);
     }
-    94% {
-      transform: translate(2px, -1px);
-      opacity: 0.9;
+    40% {
+      transform: translate(2px, 0);
     }
-    96% {
-      transform: translate(-1px, -1px);
-      opacity: 0.85;
+    60% {
+      transform: translate(-1px, 0);
     }
-    98% {
-      transform: translate(1px, 1px);
-      opacity: 0.95;
+    80% {
+      transform: translate(1px, 0);
     }
   }
 
   .glitch-hover:hover {
-    animation: glitch 0.5s ease-in-out;
+    animation: glitch 0.3s ease-in-out;
   }
 
-  /* Hero Button */
+  /* Optimized Button */
   .btn-hero {
     @apply relative px-8 py-4 font-display font-bold text-lg uppercase tracking-wider;
-    background: linear-gradient(135deg, 
-      hsl(var(--neon-green) / 0.2) 0%, 
+    background: linear-gradient(135deg,
+      hsl(var(--neon-green) / 0.2) 0%,
       hsl(var(--neon-purple) / 0.2) 100%
     );
     border: 2px solid hsl(var(--neon-green));
     color: hsl(var(--neon-green));
-    box-shadow: 
-      0 0 20px hsl(var(--neon-green) / 0.3),
-      inset 0 0 20px hsl(var(--neon-green) / 0.1);
+    box-shadow:
+      0 0 20px hsl(var(--neon-green) / 0.3);
     transition: all 0.3s ease;
+    will-change: transform, box-shadow; /* Optimize for animation */
   }
 
   .btn-hero:hover {
-    background: linear-gradient(135deg, 
-      hsl(var(--neon-green) / 0.4) 0%, 
-      hsl(var(--neon-purple) / 0.4) 100%
+    background: linear-gradient(135deg,
+      hsl(var(--neon-green) / 0.3) 0%,
+      hsl(var(--neon-purple) / 0.3) 100%
     );
-    box-shadow: 
+    box-shadow:
       0 0 40px hsl(var(--neon-green) / 0.5),
-      0 0 60px hsl(var(--neon-purple) / 0.3),
-      inset 0 0 30px hsl(var(--neon-green) / 0.2);
+      0 0 60px hsl(var(--neon-purple) / 0.3);
     transform: translateY(-2px);
   }
 
@@ -217,16 +207,14 @@
     @apply btn-hero;
     border-color: hsl(var(--neon-purple));
     color: hsl(var(--neon-purple));
-    box-shadow: 
-      0 0 20px hsl(var(--neon-purple) / 0.3),
-      inset 0 0 20px hsl(var(--neon-purple) / 0.1);
+    box-shadow:
+      0 0 20px hsl(var(--neon-purple) / 0.3);
   }
 
   .btn-hero-secondary:hover {
-    box-shadow: 
+    box-shadow:
       0 0 40px hsl(var(--neon-purple) / 0.5),
-      0 0 60px hsl(var(--neon-green) / 0.3),
-      inset 0 0 30px hsl(var(--neon-purple) / 0.2);
+      0 0 60px hsl(var(--neon-green) / 0.3);
   }
 
   /* Gradient Text */
@@ -239,7 +227,7 @@
 }
 
 @layer utilities {
-  /* Custom Animations */
+  /* Optimized Animations - simpler and more performant */
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
@@ -250,7 +238,7 @@
   }
 
   .animate-pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite;
+    animation: pulseGlow 3s ease-in-out infinite;
   }
 
   .animate-orbit {
@@ -263,16 +251,10 @@
 
   @keyframes float {
     0%, 100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    25% {
-      transform: translateY(-15px) rotate(2deg);
+      transform: translateY(0);
     }
     50% {
-      transform: translateY(-5px) rotate(-1deg);
-    }
-    75% {
-      transform: translateY(-20px) rotate(1deg);
+      transform: translateY(-10px);
     }
   }
 
@@ -281,7 +263,7 @@
       filter: drop-shadow(0 0 20px hsl(var(--neon-green) / 0.5));
     }
     50% {
-      filter: drop-shadow(0 0 40px hsl(var(--neon-green) / 0.8)) drop-shadow(0 0 60px hsl(var(--neon-purple) / 0.4));
+      filter: drop-shadow(0 0 30px hsl(var(--neon-green) / 0.7));
     }
   }
 
@@ -294,9 +276,9 @@
     }
   }
 
-  /* Particle animation */
+  /* Optimized particle animation */
   @keyframes particle-float {
-    0%, 100% {
+    0% {
       transform: translateY(0) translateX(0);
       opacity: 0;
     }
@@ -312,15 +294,39 @@
     }
   }
 
-  /* Neural network pulse */
+  /* Optimized neural network pulse */
   @keyframes neural-pulse {
     0%, 100% {
-      stroke-opacity: 0.3;
-      stroke-width: 1;
+      stroke-opacity: 0.2;
     }
     50% {
-      stroke-opacity: 1;
-      stroke-width: 2;
+      stroke-opacity: 0.6;
     }
+  }
+}
+
+/* Performance optimization for animations */
+* {
+  transform-style: flat; /* Improve rendering performance */
+  backface-visibility: hidden; /* Prevent flickering */
+}
+
+/* Optimize for mobile devices */
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: none; /* Remove expensive backdrop filter on mobile */
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Reduce animation complexity on mobile */
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-orbit {
+    animation-duration: 4s; /* Slower animations for better performance */
+  }
+
+  /* Reduce floating particles */
+  .floating-particles {
+    display: none;
   }
 }
