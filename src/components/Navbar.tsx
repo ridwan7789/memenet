@@ -66,8 +66,39 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Social Media Links */}
+        {/* Navigation Links and Buttons */}
         <div className="flex items-center space-x-4">
+          {/* Buy on pump.fun Button */}
+          <motion.a
+            href="https://pump.fun/coin/BMh2iThMiKQrjfjQJzU8HKqCGuKGALc1kYaWVRfMpump"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-lg glass-card text-sm font-medium text-muted-foreground hover:text-neon-green transition-colors relative"
+            whileHover={{
+              scale: 1.05,
+              boxShadow: '0 0 15px hsl(160 92% 51% / 0.3)',
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.div
+              className="absolute inset-0 rounded-lg"
+              animate={{
+                background: [
+                  'radial-gradient(circle at 1px 1px, hsl(160 92% 51%) 1px, transparent 0)',
+                  'radial-gradient(circle at 2px 2px, hsl(160 92% 51%) 2px, transparent 0)',
+                  'radial-gradient(circle at 1px 1px, hsl(160 92% 51%) 1px, transparent 0)'
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+              style={{
+                backgroundSize: '15px 15px',
+                opacity: 0.3
+              }}
+            />
+            Buy on pump.fun
+          </motion.a>
+
+          {/* X Community Link */}
           <motion.a
             href="https://x.com/i/communities/2001530792145805798"
             target="_blank"
