@@ -318,9 +318,7 @@ const Footer = () => {
           viewport={{ once: true }}
         >
           {[
-            { icon: Twitter, label: 'Twitter', href: '#' },
-            { icon: MessageCircle, label: 'Telegram', href: '#' },
-            { icon: Github, label: 'GitHub', href: '#' },
+            { icon: Twitter, label: 'X Community', href: 'https://x.com/i/communities/2001530792145805798' },
           ].map((social, index) => (
             <motion.a
               key={social.label}
