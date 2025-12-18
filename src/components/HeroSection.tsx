@@ -172,13 +172,36 @@ const HeroSection = () => {
 
       {/* Tagline */}
       <motion.p
-        className="font-display text-xl md:text-3xl text-neon-cyan neon-text-cyan mb-12 text-center"
+        className="font-display text-xl md:text-3xl text-neon-cyan neon-text-cyan mb-4 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
         Where Memes Meet AI
       </motion.p>
+
+      {/* Contract Address */}
+      <motion.div
+        className="mb-8 p-4 rounded-xl glass-card backdrop-blur-sm border border-border/30 max-w-2xl"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+      >
+        <p className="text-sm text-muted-foreground mb-2 text-center">M-NET Contract Address</p>
+        <div className="flex items-center justify-center space-x-2">
+          <code className="text-xs md:text-sm font-mono bg-background/50 px-3 py-2 rounded-lg overflow-x-auto text-center break-all">
+            BMh2iThMiKQrjfjQJzU8HKqCGuKGALc1kYaWVRfMpump
+          </code>
+          <motion.button
+            className="ml-2 px-3 py-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/80 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigator.clipboard.writeText('BMh2iThMiKQrjfjQJzU8HKqCGuKGALc1kYaWVRfMpump')}
+          >
+            Copy
+          </motion.button>
+        </div>
+      </motion.div>
 
       {/* CTA Buttons */}
       <motion.div
